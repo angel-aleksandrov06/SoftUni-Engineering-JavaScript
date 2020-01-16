@@ -12,5 +12,3 @@ function sameNumbers(a) {
     console.log(isTrue);
     console.log(sum)
 }
-
-sameNumbers(2222222);
