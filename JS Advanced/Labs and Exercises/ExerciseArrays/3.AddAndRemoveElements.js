@@ -12,16 +12,5 @@ function solution(input = []) {
         }
     }
 
-    if (arr.length === 0) {
-        console.log("Empty");
-    }
-    else {
-        console.log(arr.join("\n"));
-    }
+    return arr.length === 0 ? "Empty" : arr.join("\n");
 }
-
-solution(['remove',
-    'remove',
-    'remove',
-    'remove']
-);
