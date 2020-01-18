@@ -9,5 +9,3 @@ function timeToWalk(steps, footprintInMeters, speedKmh) {
 
     console.log(result)
 }
-
-timeToWalk(4000, 0.60, 5)
