@@ -1,33 +1,34 @@
 function solve(input = []) {
-    let result = {};
-    let juice = {};
 
-    for (let i = 0; i < input.length; i++) {
-        let currentString = input[i].split(" => ");
+    let parsedInput = input
+    .reduce((juiceAcc, juiceKVP) => {
+        let [juiceName, quantity] = juiceKVP.split(" => ");
 
-        if (result[currentString[0]]) {
-            result[currentString[0]] = result[currentString[0]] + Number(currentString[1]);
+        if(juiceAcc.currentJuiceQuantity[juiceName]){
+            juiceAcc.currentJuiceQuantity[juiceName] += +quantity;
         }
-        else {
-            result[currentString[0]] = Number(currentString[1]);
+        else{
+            juiceAcc.currentJuiceQuantity[juiceName] = +quantity;
         }
 
-        let bottleQ = Math.floor(result[currentString[0]] / 1000);
+        let bottleQ = Math.floor(juiceAcc.currentJuiceQuantity[juiceName] / 1000);
 
-        if (bottleQ > 0) {
-            juice[currentString[0]] = bottleQ;
+        if(bottleQ >0 && !juiceAcc.completedJuices.includes(juiceName)){
+            juiceAcc.completedJuices.push(juiceName );
         }
-    }
-     let finalResult = Object.entries(juice);
 
-     for (let i = 0; i < finalResult.length; i++) {
-         console.log(finalResult[i].join('=>'));
-     }
+        return juiceAcc;
+
+    }, {completedJuices:[], currentJuiceQuantity: {} })
+
+    parsedInput.completedJuices.map(juice => {
+        console.log(`${juice} => ${Math.floor(parsedInput.currentJuiceQuantity[juice] / 1000)}`)
+    });
 }
 
-console.log(solve(['Orange => 2000',
+solve(['Orange => 2000',
     'Peach => 1432',
     'Banana => 450',
     'Peach => 600',
     'Strawberry => 549']
-));
+);
