@@ -7,7 +7,7 @@ function solve() {
     let usserAnswers = 0;
     let currentStep = 0;
 
-    quizzie.addEventListener("click",(e) => {
+    let handler = (e) => {
 
         if(e.target.className == "answer-text"){
 
@@ -22,12 +22,15 @@ function solve() {
                 sections[currentStep].style.display = "block";
             }
 
-            if(currentStep === 3){
+            if(currentStep === correctAnswers.length){
+
+                quizzie.removeEventListener("click", handler)
                 document.querySelector("#results").style.display = "block";
                 result.innerHTML = 
                 correctAnswers.length === usserAnswers 
                 ? "You are recognized as top JavaScript fan!" :  `You have ${usserAnswers} right answers`
             }
         }
-    })
+    }
+    quizzie.addEventListener("click", handler)
 }
