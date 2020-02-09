@@ -3,9 +3,8 @@ function addItem() {
     let list = document.getElementById("items");
 
     let li = document.createElement("li");
-    li.innerText = input.value;
+    li.textContent = input.value;
 
     list.appendChild(li);
     input.value = "";
-    console.log(li.innerText);
 }

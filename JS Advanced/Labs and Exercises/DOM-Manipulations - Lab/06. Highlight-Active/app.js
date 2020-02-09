@@ -12,6 +12,5 @@ function focus() {
 
             e.target.parentNode.classList.add("focused");
         })
-        
     }
 }
