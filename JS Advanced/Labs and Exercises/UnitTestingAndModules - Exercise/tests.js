@@ -2,7 +2,9 @@ let isOddOrEven = require('./2.evenOrOdd');
 let lookupChar = require('./3.charLookup');
 let mathEnforcer = require('./4.mathEnforcer');
 let StringBuilder = require('./5.stringBuilder');
+let PaymentPackage = require('./6.paymentPackage');
 let assert = require('chai').assert;
+
 
 // 2.evenOrOdd
 
@@ -434,5 +436,212 @@ describe("StringBuilder() behavior", () => {
 
             assert.equal(sb.toString(), "User,w hello, there");
         })
+    });
+});
+
+// 6.paymentPackage
+
+describe("PaymentPackage() behavior", () => {
+
+    let actualResult;
+    let expectedResult;
+    let pp;
+
+    beforeEach(() => {
+        actualResult = null;
+        expectedResult = null;
+        pp = new PaymentPackage("boss", 5);
+    });
+
+    describe("constructor() Check", () => {
+
+        it("check prop name with valid param", () => {
+            pp = new PaymentPackage("boss", 5);
+            actualResult = pp.name;
+            expectedResult = "boss";
+
+            assert.deepEqual(expectedResult, actualResult);
+        });
+
+        it("check prop value with valid param", () => {
+            pp = new PaymentPackage("boss", 5);
+            actualResult = pp.value;
+            expectedResult = 5;
+
+            assert.deepEqual(expectedResult, actualResult);
+        });
+
+        it("check prop value with valid param", () => {
+            pp = new PaymentPackage("boss", 0);
+            actualResult = pp.value;
+            expectedResult = 0;
+
+            assert.deepEqual(expectedResult, actualResult);
+        });
+
+        it("check prop VAT with valid param", () => {
+            pp = new PaymentPackage("boss", 0);
+            actualResult = pp.VAT;
+            expectedResult = 20;
+
+            assert.deepEqual(expectedResult, actualResult);
+        });
+
+        it("check prop active with valid param", () => {
+            pp = new PaymentPackage("boss", 0);
+            actualResult = pp.active;
+            expectedResult = true;
+
+            assert.deepEqual(expectedResult, actualResult);
+        });
+
+        it("should Throw error ivalid type of input name", () => {
+            assert.throw(() => new PaymentPackage(true, 5), "Name must be a non-empty string");
+            assert.throw(() => new PaymentPackage("", 5), "Name must be a non-empty string");
+            assert.throw(() => new PaymentPackage(5, 5), "Name must be a non-empty string");
+        });
+
+        it("should Throw error ivalid type of input value", () => {
+            assert.throw(() => new PaymentPackage("true", "ivan"), "Value must be a non-negative number");
+            assert.throw(() => new PaymentPackage("Ivan", -10), "Value must be a non-negative number");
+        });
+    });
+
+    describe("prop name() Check", () => {
+
+        it("with valid param", () => {
+            pp.name = "ganio";
+            actualResult = pp.name;
+            expectedResult = "ganio";
+
+            assert.deepEqual(expectedResult, actualResult);
+        });
+
+        it("with invalid param (\"\")", () => {
+            assert.throw(() => pp.name = "");
+        });
+
+        it("with invalid param (type array)", () => {
+            assert.throw(() => pp.name = []);
+        });
+    });
+
+    describe("prop value() Check", () => {
+
+        it("with valid param (20)", () => {
+            pp.value = 20;
+            actualResult = pp.value;
+            expectedResult = 20;
+
+            assert.deepEqual(expectedResult, actualResult);
+        });
+
+        it("with valid param (0)", () => {
+            pp.value = 0;
+            actualResult = pp.value;
+            expectedResult = 0;
+
+            assert.deepEqual(expectedResult, actualResult);
+        });
+
+        it("with invalid param (type string)", () => {
+            assert.throw(() => pp.value = "",'Value must be a non-negative number');
+        });
+        
+        it("with invalid param ( -40 )", () => {
+            assert.throw(() => pp.value = -40,'Value must be a non-negative number');
+        });
+    });
+
+    describe("prop VAT() Check", () => {
+
+        it("with valid param (20)", () => {
+            pp.VAT = 20;
+            actualResult = pp.VAT;
+            expectedResult = 20;
+
+            assert.deepEqual(expectedResult, actualResult);
+        });
+
+        it("with valid param (20.1)", () => {
+            pp.VAT = 20.1;
+            actualResult = pp.VAT;
+            expectedResult = 20.1;
+
+            assert.deepEqual(expectedResult, actualResult);
+        });
+
+        it("with valid param (0)", () => {
+            pp.VAT = 0;
+            actualResult = pp.VAT;
+            expectedResult = 0;
+
+            assert.deepEqual(expectedResult, actualResult);
+        });
+
+        it("with invalid param (string)", () => {
+            assert.throw(() => pp.VAT = "",'VAT must be a non-negative number');
+        });
+
+        it("with invalid param (-3)", () => {
+            assert.throw(() => pp.VAT = -3 ,'VAT must be a non-negative number');
+        });
+
+        it("with invalid param (undefined)", () => {
+            assert.throw(() => pp.VAT = undefined ,'VAT must be a non-negative number');
+        });
+    });
+
+    describe("prop active() Check", () => {
+
+        it("with valid param (fasle)", () => {
+            pp.active = false;
+            actualResult = pp.active;
+            expectedResult = false;
+
+            assert.deepEqual(expectedResult, actualResult);
+        });
+
+        it("with invalid param (number)", () => {
+            assert.throw(() => pp.active = 5.5, "Active status must be a boolean");
+        });
+
+        it("with invalid param (string)", () => {
+            assert.throw(() => pp.active = "true", "Active status must be a boolean");
+        });
+    });
+
+    describe("method toString() Check", () => {
+
+        it("", () => {
+            actualResult = pp.toString()
+            expectedResult = 'Package: boss\n- Value (excl. VAT): 5\n- Value (VAT 20%): 6';
+
+            assert.deepEqual(expectedResult, actualResult);
+        });
+
+        it("", () => {
+            pp.active = false;
+            pp.VAT = 10;
+            actualResult = pp.toString()
+            expectedResult = 'Package: boss (inactive)\n- Value (excl. VAT): 5\n- Value (VAT 10%): 5.5';
+
+            assert.deepEqual(expectedResult, actualResult);
+        });
+    });
+
+    describe("Type of PaymentPackage Check", () => {
+
+        it("PaymentPackage exist", () => {
+            assert.exists(PaymentPackage)
+        });
+
+        it("StringBuilder type", () => {
+            assert.equal(typeof PaymentPackage, "function");
+        });
+
+        it("should have properties", () => {
+            assert.isFunction(PaymentPackage.prototype.toString);
+        });
     });
 });
