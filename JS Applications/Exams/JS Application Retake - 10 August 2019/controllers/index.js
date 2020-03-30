@@ -1,9 +1,9 @@
 import user from './user.js';
-import couse from './cause.js';
+import cause from './cause.js';
 import home from './home.js';
 
 export default{
     user,
-    couse,
+    cause,
     home
 };
