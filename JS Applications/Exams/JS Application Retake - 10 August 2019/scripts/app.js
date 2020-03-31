@@ -20,7 +20,9 @@ const app = Sammy('#root', function () {
     this.get("#/cause/create", controllers.cause.get.create);
     this.get("#/cause/details/:causeId", controllers.cause.get.details);
 
-    this.post("#/cause/create/", controllers.cause.post.create);
+    this.post("#/cause/create", controllers.cause.post.create);
+    this.get("#/cause/close/:causeId", controllers.cause.del.close);
+    this.post("#/cause/donate/:causeId", controllers.cause.put.donate);
 });
 
 (() => {

@@ -28,12 +28,12 @@ export default {
             models.cause.get(causeId).then((resp) => {
 
                 const cause = modifier(resp);
+                console.log(cause);
 
                 Object.keys(cause).forEach((key) => {
                     context[key] = cause[key];
                 });
-
-                context.canDonate = cause.uId !== localStorage.getItem("uId");
+                context.canDonate = cause.uId !== localStorage.getItem("userId");
 
                 extend(context).then(function () {
                     this.partial('../views/cause/details.hbs')
@@ -42,12 +42,10 @@ export default {
             }).catch((e) => console.error(e));
         }
     },
-
     post: {
         create(context) {
-
             const data = { ...context.params,
-                uid: localStorage.getItem("userId"),
+                uId: localStorage.getItem("userId"),
                 collectedFunds: 0,
                 donors: []  
             };
@@ -55,6 +53,32 @@ export default {
             models.cause.create(data).then((resp) => {
                 context.redirect('#/cause/dashboard');
             }).catch((e) => console.error(e));
+        }
+    },
+    del: {
+        close(context) {
+            const { causeId } = context.params;
+
+            models.cause.close(causeId).then((resp) => {
+                context.redirect('#/cause/dashboard');
+            })
+        }
+    },
+    put: {
+        donate(context) {
+            const { causeId, donatedAmount } = context.params;
+
+            models.cause.get(causeId).then((resp) => {
+                const cause = modifier(resp);
+                
+                cause.collectedFunds += Number(donatedAmount);
+                cause.donors.push(localStorage.getItem("userEmail"));
+                
+                return models.cause.donate(causeId, cause)
+            })
+            .then((resp) => {
+                context.redirect("#/cause/dashboard");
+            })
         }
     }
 };

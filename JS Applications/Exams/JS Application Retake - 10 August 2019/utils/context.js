@@ -6,15 +6,19 @@ export default function(context) {
             // console.log(user);
             context.isLoggedIn = true;
             context.userId = user.uid;
-            localStorage.setItem('userId', user.uid);
             context.username = user.email;
+
+            localStorage.setItem('userId', user.uid);
+            localStorage.setItem('userEmail', user.email);
             // ...
         } else {
             // User is signed out.
             context.isLoggedIn = false;
             context.userId = null;
-            localStorage.removeItem('userId');
             context.username = null;
+            
+            localStorage.removeItem('userId');
+            localStorage.removeItem('userEmail');
             // ...
         }
     });

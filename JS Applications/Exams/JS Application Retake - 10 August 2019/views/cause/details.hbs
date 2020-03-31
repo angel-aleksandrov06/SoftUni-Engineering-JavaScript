@@ -35,13 +35,13 @@
             <div class="modal-footer">
 
                 {{#if canDonate}}
-                <form method="" action="">
+                <form method="POST" action="#/cause/donate/{{ id }}">
                     <label class="grey-text font-weight-light">My donation: </label>
-                    <input name="currentDonation" type="number" min="1" class="form-control" />
+                    <input name="donatedAmount" type="number" min="1" class="form-control" />
                     <button style="width: 100%;" class="btn btn-success" type="submit">Make the donation</button>
                 </form>
                 {{else}}
-                <a href="" class="btn btn-danger">Close the cause</a>
+                <a href="#/cause/close/{{ id }}" class="btn btn-danger">Close the cause</a>
                 {{/if}}
             </div>
         </div>
