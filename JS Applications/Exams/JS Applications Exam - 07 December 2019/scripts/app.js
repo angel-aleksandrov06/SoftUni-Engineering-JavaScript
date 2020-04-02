@@ -23,8 +23,13 @@ const app = Sammy('#root', function () {
     this.get("#/trek/details/:trekId", controllers.trek.get.details);
 
     this.post("#/trek/create", controllers.trek.post.create);
-    this.get("#/trek/close/:trekId", controllers.trek.del.close);
+    
+    this.get("#/trek/edit/:trekId", controllers.trek.get.edit);
+    this.post("#/trek/edit/:trekId", controllers.trek.put.edit);
+    
     this.get("#/trek/like/:trekId", controllers.trek.put.like);
+
+    this.get("#/trek/close/:trekId", controllers.trek.del.close);
 });
 
 (() => {

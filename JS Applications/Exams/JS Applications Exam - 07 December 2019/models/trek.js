@@ -15,7 +15,7 @@ export default {
     close(id) {
         return db.collection("treks").doc(id).delete();
     },
-    donate(id, data) {
+    update(id, data) {
         return db.collection("treks").doc(id).update(data)
     }
 };

@@ -4,7 +4,7 @@
     <img class="profile-img" src="./images/user.png" />
     <div class="profile-info">
         <p>Username: <small>{{username}}</small></p> 
-        <p class="infoType">Wished 0 treks =)</p>
+        <p class="infoType">Wished {{wishedTreks}} treks =)</p>
         {{#each treks}}
         <p>{{this}}</p>
         {{else}}
@@ -14,5 +14,3 @@
 </div>
 
 {{> footer}}
-
-{{!-- TODO: username and treks --}}

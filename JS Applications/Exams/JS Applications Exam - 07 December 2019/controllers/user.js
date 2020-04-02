@@ -1,15 +1,16 @@
 import models from '../models/index.js';
-import exted from '../utils/context.js';
+import extend from '../utils/context.js';
+import modifier from '../utils/modifier.js'
 
 export default {
     get: {
         login(context) {
-            exted(context).then(function () {
+            extend(context).then(function () {
                 this.partial("../views/user/login.hbs");
             });
         },
         register(context) {
-            exted(context).then(function () {
+            extend(context).then(function () {
                 this.partial("../views/user/register.hbs");
             });
         },
@@ -19,10 +20,25 @@ export default {
             })
         },
         profile(context) {
-            exted(context).then(function () {
-                this.partial("../views/user/profile.hbs");
+            models.trek.getAll().then((resp) => {
+                const treks = [];
+                const treksObj = resp.docs.map(modifier);
+                Object.keys(treksObj).forEach((key) => {
+                    // console.log(treksObj[key])
+                    if(localStorage.getItem("userId") === treksObj[key].uId){
+                        treks.push(treksObj[key].location);
+                    }
+                });
+                context.treks = treks;
+                context.wishedTreks = treks.length;
+                // console.log(treks);
+
+                extend(context).then(function () {
+                    this.partial('../views/user/profile.hbs');
+                });
             });
-        }
+            
+        },
     },
     post: {
         login(context) {
