@@ -67,16 +67,28 @@ export default {
     },
     post: {
         create(context) {
-            const data = { ...context.params,
-                uId: localStorage.getItem("userId"),
-                username: localStorage.getItem("userEmail"),
-                likes: 0,
-            };
-            // console.log(data);
+            if(context.params.location.length >= 6 && context.params.description.length >= 10){
 
-            models.trek.create(data).then((resp) => {
-                context.redirect('#/trek/dashboard');
-            }).catch((e) => console.error(e));
+                const data = { ...context.params,
+                    uId: localStorage.getItem("userId"),
+                    username: localStorage.getItem("userEmail"),
+                    likes: 0,
+                };
+                 // console.log(data);
+
+                models.trek.create(data).then((resp) => {
+                    models.notification.displaySuccess("Trek created successful!");
+                    context.redirect('#/trek/dashboard');
+                })
+                .catch(() => {
+                    models.notification.displayError(`Invalid input!`);
+                });
+            }
+            else {
+                models.notification.displayError(`Invalid input!`);
+            }
+
+            
         }
     },
     del: {
@@ -84,6 +96,7 @@ export default {
             const { trekId } = context.params;
 
             models.trek.close(trekId).then((resp) => {
+                models.notification.displaySuccess("You closed the trek successfully!");
                 context.redirect('#/trek/dashboard');
             })
         }
@@ -102,6 +115,7 @@ export default {
             })
             .then((resp) => {
                 context.redirect(`#/trek/dashboard`);
+                models.notification.displaySuccess("You liked the trek successfully!");
             })
         },
         edit(context) {
@@ -120,6 +134,7 @@ export default {
             })
             .then((resp) => {
                 context.redirect(`#/trek/details/${trekId}`);
+                models.notification.displaySuccess("Trek edited successfully!");
             })
         }
     }

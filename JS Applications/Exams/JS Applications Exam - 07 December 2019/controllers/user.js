@@ -17,6 +17,7 @@ export default {
         logout(context) {
             models.user.logout().then((resp) => {
                 context.redirect('#/home');
+                models.notification.displaySuccess("Logout successful!");
             })
         },
         profile(context) {
@@ -25,7 +26,7 @@ export default {
                 const treksObj = resp.docs.map(modifier);
                 Object.keys(treksObj).forEach((key) => {
                     // console.log(treksObj[key])
-                    if(localStorage.getItem("userId") === treksObj[key].uId){
+                    if (localStorage.getItem("userId") === treksObj[key].uId) {
                         treks.push(treksObj[key].location);
                     }
                 });
@@ -37,7 +38,7 @@ export default {
                     this.partial('../views/user/profile.hbs');
                 });
             });
-            
+
         },
     },
     post: {
@@ -49,22 +50,33 @@ export default {
                     context.user = resp;
                     context.username = resp.email;
                     context.isLoggedIn = true;
+                    models.notification.displaySuccess("Successfully logged user!");
                     context.redirect('#/trek/dashboard');
                 })
-                .catch((e) => console.error(e))
+                .catch(() => {
+                    models.notification.displayError(`Invalid Email or password!`);
+                    document.getElementById("inputUsername").value = "";
+                    document.getElementById("inputPassword").value = "";
+                });
         },
         register(context) {
             const { username, password, rePassword } = context.params;
 
-            if (password === rePassword && username.length>= 3 && password.length >= 6) {
+            if (password === rePassword && username.length >= 3 && password.length >= 6) {
                 models.user.register(username, password)
                     .then((resp) => {
                         context.user = resp;
                         context.username = resp.email;
                         context.isLoggedIn = true;
                         context.redirect('#/trek/dashboard');
+                        models.notification.displaySuccess("Successfully registered user!");
                     })
-                    .catch((e) => console.error(e));
+                    .catch(() => {
+                        models.notification.displayError(`A user with this email already exists!`);
+                        document.getElementById("inputUsername").value = "";
+                        document.getElementById("inputPassword").value = "";
+                        document.getElementById("inputRePassword").value = "";
+                    });
             }
         }
     }
