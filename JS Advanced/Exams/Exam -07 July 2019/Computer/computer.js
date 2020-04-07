@@ -74,7 +74,14 @@ class Computer {
     }
 
     taskManagerView() {
-        
+        if(this.taskManager.length === 0){
+            return `All running smooth so far`;
+        }
+        else{
+            return this.taskManager
+            .map((p) => `Name - ${p.name} | Usage - CPU: ${p.cpuUsage.toFixed(0)}%, RAM: ${p.ramUsage.toFixed(0)}%`)
+            .join('\n');
+        }
     }
 
     get totalRamUsage() {
