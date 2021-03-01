@@ -109,4 +109,4 @@ UpgradeLog*.XML
 *.ide-wal
 *.ide-shm
 
-*node_modules/*
+node_modules/

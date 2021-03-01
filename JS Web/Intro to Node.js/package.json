@@ -1,0 +1,14 @@
+{
+  "name": "demo",
+  "version": "0.1.0",
+  "description": "Demo App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "IP",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^4.17.21"
+  }
+}
